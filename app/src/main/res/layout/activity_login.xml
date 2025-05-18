@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D2E3FC"
+    tools:context=".activity.LoginActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="280dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:src="@drawable/polzunova"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mulish"
+                android:text="Колледж Ползунова"
+                android:textSize="25dp"
+                android:textColor="#202124"
+                android:textFontWeight="600"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:text="Номер телефона"
+                android:textSize="22dp"
+                android:textFontWeight="700"
+                android:fontFamily="@font/mulish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:id="@+id/ePhoneLogin"
+                android:layout_width="300dp"
+                android:hint="Введите номер"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/bLogin"
+                android:text="Войти"
+                android:layout_width="150dp"
+                android:textColor="#E0E2E7"
+                android:textSize="20dp"
+                android:fontFamily="@font/mulish"
+                android:backgroundTint="#0D652D"
+                android:layout_height="60dp"/>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+            <Button
+                android:id="@+id/bBackLogin"
+                android:text="Выйти"
+                android:layout_width="150dp"
+                android:textColor="#E0E2E7"
+                android:textSize="20dp"
+                android:fontFamily="@font/mulish"
+                android:backgroundTint="#A50E0E"
+                android:layout_height="60dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
