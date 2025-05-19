@@ -1,9 +1,11 @@
 package com.example.collage.models
 
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-data class Item(
+@Entity(tableName = "items")
+data class Subject(
     @PrimaryKey
-    val itemId: Int,
+    val subjectId: Int,
     val name: String
 )

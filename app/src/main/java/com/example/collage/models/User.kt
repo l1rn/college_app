@@ -9,5 +9,6 @@ data class User(
     val name: String,
     val role: Role,
     val phone: String,
+    val scheduleId: Int? = null,
     val groupId: Int? = null
 )

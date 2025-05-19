@@ -4,11 +4,11 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.example.collage.models.User
 
-data class ItemWithStudentMark (
+data class SubjectWithStudentMark (
     @Embedded val user: User,
     @Relation(
         parentColumn = "userId",
         entityColumn = "itemId"
     )
-    val mark: Int
+    val marks: List<Int>
 )
