@@ -7,9 +7,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.collage.dao.GroupDao
-import com.example.collage.dao.ItemDao
-import com.example.collage.dao.ItemsTimeDao
-import com.example.collage.dao.ScheduleDao
+import com.example.collage.dao.SubjectDao
+import com.example.collage.dao.SubjectsTimeDao
 import com.example.collage.dao.UserDao
 import com.example.collage.models.Group
 import com.example.collage.models.Subject
@@ -23,7 +22,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
-import java.util.Date
 
 @Database(
     entities = [
@@ -31,7 +29,6 @@ import java.util.Date
         Group::class,
         Subject::class,
         SubjectTime::class,
-        Schedule::class,
                ],
     version = 1
 )
@@ -39,9 +36,8 @@ import java.util.Date
 abstract class AppDatabase : RoomDatabase() {
     abstract fun groupDao(): GroupDao
     abstract fun userDao(): UserDao
-    abstract fun itemDao(): ItemDao
-    abstract fun itemsTimeDao(): ItemsTimeDao
-    abstract fun scheduleDao(): ScheduleDao
+    abstract fun subjectDao(): SubjectDao
+    abstract fun subjectsTimeDao(): SubjectsTimeDao
 
     companion object{
         @Volatile
@@ -91,7 +87,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                 val teachers = listOf(
                     User(userId = 7, name = "Дроздов Георгий Дмитриевич", role = Role.TEACHER, phone = "8000777666"),
-                    User(userId = 8, name = "Иванова Анна Сергеевна", role = Role.STUDENT, phone = "79001234567"),
+                    User(userId = 8, name = "Иванова Анна Сергеевна", role = Role.TEACHER, phone = "79001234567"),
                     User(userId = 9, name = "Петров Владислав Игоревич", role = Role.TEACHER, phone = "79215553344"),
                     User(userId = 10, name = "Смирнова Ольга Викторовна", role = Role.TEACHER, phone = "78122456789"),
                     User(userId = 11, name = "Кузнецов Артём Александрович", role = Role.STUDENT, phone = "79637891234"),
@@ -101,7 +97,7 @@ abstract class AppDatabase : RoomDatabase() {
                 db.userDao().insertAll(teachers)
             }
 
-            if(db.itemDao().count() == 0){
+            if(db.subjectDao().count() == 0){
                 val subjects = listOf(
                     Subject(subjectId = 1, name = "Математика"),
                     Subject(subjectId = 2, name = "Русский"),
@@ -112,20 +108,22 @@ abstract class AppDatabase : RoomDatabase() {
                     Subject(subjectId = 7, name = "vim обучение"),
                     Subject(subjectId = 8, name = "Школота")
                 )
-                db.itemDao().insertAll(subjects)
+                db.subjectDao().insertAll(subjects)
             }
-            if(db.itemsTimeDao().count() == 0){
+            if(db.subjectsTimeDao().count() == 0){
                 val monday = listOf(
                     // Понедельник
                     SubjectTime(
                         subjectTimeId = 1,
                         subjectId = 1,
+                        teacherId = 8,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 23, 9, 0),  // 23 июня (пн)
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 23, 10, 30)
                     ),
                     SubjectTime(
                         subjectTimeId = 2,
                         subjectId = 2,
+                        teacherId = 9,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 23, 10, 40), // Перемена 10 мин
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 23, 12, 10)
                     ),
@@ -136,12 +134,14 @@ abstract class AppDatabase : RoomDatabase() {
                     SubjectTime(
                         subjectTimeId = 3,
                         subjectId = 3,
+                        teacherId = 7,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 24, 8, 30),  // 24 июня (вт)
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 24, 10, 0)
                     ),
                     SubjectTime(
                         subjectTimeId = 4,
                         subjectId = 4,
+                        teacherId = 7,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 24, 10, 20), // Перемена 20 мин
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 24, 11, 50)
                     ),
@@ -152,12 +152,14 @@ abstract class AppDatabase : RoomDatabase() {
                     SubjectTime(
                         subjectTimeId = 5,
                         subjectId = 5,
+                        teacherId = 10,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 25, 13, 0),  // 25 июня (ср) - день начинается позже
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 25, 14, 30)
                     ),
                     SubjectTime(
                         subjectTimeId = 6,
                         subjectId = 6,
+                        teacherId = 11,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 25, 14, 40), // Перемена 10 мин
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 25, 16, 10)
                     ),
@@ -167,47 +169,23 @@ abstract class AppDatabase : RoomDatabase() {
                     SubjectTime(
                         subjectTimeId = 7,
                         subjectId = 7,
+                        teacherId = 12,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 26, 9, 30),  // 26 июня (чт)
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 26, 11, 0)
                     ),
                     SubjectTime(
                         subjectTimeId = 8,
                         subjectId = 8,
+                        teacherId = 10,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 26, 11, 15), // Перемена 15 мин
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 26, 12, 45)
                     ),
                 )
-                val friday = listOf(
-                    // Пятница
-                    SubjectTime(
-                        subjectTimeId = 9,
-                        subjectId = 9,
-                        lessonStart = LocalDateTime.of(2025, Month.JUNE, 27, 10, 0),  // 27 июня (пт)
-                        lessonEnd = LocalDateTime.of(2025, Month.JUNE, 27, 11, 30)
-                    ),
-                    SubjectTime(
-                        subjectTimeId = 10,
-                        subjectId = 10,
-                        lessonStart = LocalDateTime.of(2025, Month.JUNE, 27, 11, 45), // Перемена 15 мин
-                        lessonEnd = LocalDateTime.of(2025, Month.JUNE, 27, 13, 15)
-                    )
-                )
-                db.itemsTimeDao().insertAll(monday)
-                db.itemsTimeDao().insertAll(tuesday)
-                db.itemsTimeDao().insertAll(wednesday)
-                db.itemsTimeDao().insertAll(thursday)
-                db.itemsTimeDao().insertAll(friday)
+                db.subjectsTimeDao().insertAll(monday)
+                db.subjectsTimeDao().insertAll(tuesday)
+                db.subjectsTimeDao().insertAll(wednesday)
+                db.subjectsTimeDao().insertAll(thursday)
 
-                if(db.scheduleDao().count() == 0){
-                    val schedules = listOf(
-                        Schedule(scheduleId = 1, groupId = 1, dateWeek = LocalDate.of(2025, Month.JUNE, 23), items = monday),
-                        Schedule(scheduleId = 2, groupId = 1, dateWeek = LocalDate.of(2025, Month.JUNE, 24), items = tuesday),
-                        Schedule(scheduleId = 3, groupId = 1, dateWeek = LocalDate.of(2025, Month.JUNE, 25), items = wednesday),
-                        Schedule(scheduleId = 4, groupId = 1, dateWeek = LocalDate.of(2025, Month.JUNE, 26), items = thursday),
-                        Schedule(scheduleId = 5, groupId = 1, dateWeek = LocalDate.of(2025, Month.JUNE, 27), items = friday)
-                    )
-                    db.scheduleDao().insertAll(schedules = schedules)
-                }
             }
         }
 

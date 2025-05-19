@@ -13,4 +13,6 @@ interface ScheduleDao {
     @Insert
     suspend fun insertAll(schedules: List<Schedule>)
 
+    @Query("SELECT * FROM schedules")
+    suspend fun getAllSchedules(): List<Schedule>
 }

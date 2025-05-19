@@ -6,10 +6,13 @@ import androidx.room.Query
 import com.example.collage.models.SubjectTime
 
 @Dao
-interface ItemsTimeDao {
+interface SubjectsTimeDao {
     @Insert
     suspend fun insertAll(items: List<SubjectTime>)
 
-    @Query("SELECT COUNT(*) FROM itemsTime")
+    @Query("SELECT COUNT(*) FROM subjectsTime")
     suspend fun count(): Int
+
+    @Query("SELECT * FROM subjectsTime")
+    suspend fun getAllSubjectsTime(): List<SubjectTime>
 }
