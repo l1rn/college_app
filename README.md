@@ -1,1 +1,1 @@
-# college_app
+# collage_app

@@ -24,7 +24,7 @@ class Converters {
     fun fromSubjectTimeList(list: List<SubjectTime>): String{
         return Gson().toJson(list)
     }
-    
+
     @TypeConverter
     fun toSubjectTimeList(value: String): List<SubjectTime>{
         val type = object : TypeToken<List<SubjectTime>>() {}.type
