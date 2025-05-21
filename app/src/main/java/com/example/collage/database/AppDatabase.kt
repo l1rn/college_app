@@ -82,6 +82,8 @@ abstract class AppDatabase : RoomDatabase() {
                 db.groupDao().insertAll(groups)
                 val usersWithGroup = listOf(
                     User(userId = 1, name = "Романов Роман Романович", role = Role.STUDENT, phone = "8777666555", groupId = 1),
+                    User(userId = 14, name = "Романов Егор Романович", role = Role.STUDENT, phone = "8777666444", groupId = 1),
+                    User(userId = 13, name = "Романов Георгий Романович", role = Role.STUDENT, phone = "8777666777", groupId = 1),
                     User(userId = 2, name = "Иванов Иван Иванович", role = Role.STUDENT, phone = "87775554433", groupId = 2),
                     User(userId = 3, name = "Петрова Анна Сергеевна", role = Role.STUDENT, phone = "87011234567", groupId = 3),
                     User(userId = 4, name = "Смирнов Алексей Дмитриевич", role = Role.STUDENT, phone = "87778889900",groupId = 4),
