@@ -75,6 +75,20 @@
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="30dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/bAboutSubjectTeacher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#4285F4"
+                    android:text="Подробнее"
+                    android:textSize="25dp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/mulish"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

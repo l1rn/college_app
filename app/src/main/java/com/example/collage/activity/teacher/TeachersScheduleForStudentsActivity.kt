@@ -1,6 +1,7 @@
 package com.example.collage.activity.teacher
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.collage.R
+import com.example.collage.SessionManager
 import com.example.collage.database.AppDatabase
 import com.example.collage.models.SubjectTime
 import kotlinx.coroutines.launch
@@ -23,7 +25,9 @@ import java.time.format.DateTimeFormatter
 class TeachersScheduleForStudentsActivity : AppCompatActivity() {
     private lateinit var db: AppDatabase
     private lateinit var adapter: TeacherScheduleAdapter
+    private var studentId: Int = -1
     private var teacherId: Int = -1
+    private var teacherLogin: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,7 +38,23 @@ class TeachersScheduleForStudentsActivity : AppCompatActivity() {
             insets
         }
         db = AppDatabase.getDatabase(applicationContext)
-        teacherId = intent.getIntExtra("TEACHER_ID", -1)
+        if (SessionManager.getTeacherId(applicationContext) != -1) {
+            teacherLogin = true
+        }else{
+            teacherLogin = false
+        }
+
+        if (teacherLogin) {
+            teacherId = SessionManager.getTeacherId(applicationContext)
+        }
+        else {
+            teacherId = intent.getIntExtra("TEACHER_ID", -1)
+        }
+
+        println("Teacher id: $teacherId, teacherLogin: $teacherLogin")
+
+        studentId = SessionManager.getStudentId(applicationContext)
+
         if(teacherId == -1){
             finish()
             return
@@ -61,6 +81,7 @@ class TeachersScheduleForStudentsActivity : AppCompatActivity() {
         }
     }
 
+
     inner class TeacherScheduleAdapter(context: Context): BaseAdapter(){
         private val inflater = LayoutInflater.from(context)
         private var scheduleTeacher = emptyList<SubjectTime>()
@@ -82,18 +103,30 @@ class TeachersScheduleForStudentsActivity : AppCompatActivity() {
             val item = getItem(position)
 
             lifecycleScope.launch {
+                try {
+                    view.findViewById<TextView>(R.id.tGroup).text =
+                        db.groupDao().getGroupFromId(item.groupId).name
 
-                view.findViewById<TextView>(R.id.tGroup).text =
-                    db.groupDao().getGroupFromId(item.groupId).name
+                    view.findViewById<TextView>(R.id.tSubjectTeacher).text =
+                        db.subjectDao().getSubjectById(item.subjectId).name
 
-                view.findViewById<TextView>(R.id.tSubjectTeacher).text =
-                    db.subjectDao().getSubjectById(item.subjectId).name
+                    val button = findViewById<Button>(R.id.bAboutSubjectTeacher)
+
+                    button.visibility = if (teacherLogin) View.VISIBLE else View.INVISIBLE
+                    button.setOnClickListener {
+                        SessionManager.saveSubjectId(applicationContext, item.subjectId)
+                        startActivity(Intent(applicationContext, SubjectAboutForTeacherActivity::class.java))
+                    }
+                }
+                catch (e: Exception){
+                    e.printStackTrace()
+                }
 
             }
             view.findViewById<TextView>(R.id.tLessonStartTeacher).text =
                 "Начало: ${item.lessonStart.format(timeFormatter)}"
             view.findViewById<TextView>(R.id.tLessonEndTeacher).text =
-                "Начало: ${item.lessonEnd.format(timeFormatter)}"
+                "Конец: ${item.lessonEnd.format(timeFormatter)}"
             return view
         }
 

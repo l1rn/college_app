@@ -16,6 +16,7 @@ import com.example.collage.SessionManager
 import com.example.collage.activity.student.ScheduleForStudentsActivity
 import com.example.collage.activity.student.StudentActivity
 import com.example.collage.activity.teacher.TeacherActivity
+import com.example.collage.activity.teacher.TeachersScheduleForStudentsActivity
 import com.example.collage.database.AppDatabase
 import com.example.collage.models.Role
 import kotlinx.coroutines.launch
@@ -47,20 +48,24 @@ class LoginActivity : AppCompatActivity() {
             val phoneExists = db.userDao().isUserExists(phone)
             if(phoneExists){
                 val role = db.userDao().getRoleFromPhone(phone)
+                println(role)
+
+                SessionManager.clearSession(context)
+
                 if(role == Role.STUDENT){
                     SessionManager.saveStudentId(context, db.userDao().getUserIdFromPhone(phone))
                 }
-                if(role == Role.TEACHER){
+                else if(role == Role.TEACHER){
                     SessionManager.saveTeacherId(context, db.userDao().getUserIdFromPhone(phone))
                 }
 
                 when (role) {
                     Role.STUDENT -> startActivity(Intent(context, ScheduleForStudentsActivity::class.java))
-                    Role.TEACHER -> startActivity(Intent(context, TeacherActivity::class.java))
+                    Role.TEACHER -> startActivity(Intent(context, TeachersScheduleForStudentsActivity::class.java))
                 }
             }
             else{
-                Toast.makeText(context, "yyy", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Неправильный логин или пароль", Toast.LENGTH_SHORT).show()
 
             }
         }

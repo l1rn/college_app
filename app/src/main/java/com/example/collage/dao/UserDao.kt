@@ -25,4 +25,7 @@ interface UserDao {
 
     @Query("SELECT * FROM users WHERE userId = :userId")
     suspend fun getUserFromId(userId: Int): User
+
+    @Query("SELECT * FROM users WHERE groupId = :groupId")
+    suspend fun getAllUsersByGroupId(groupId: Int): List<User>
 }
