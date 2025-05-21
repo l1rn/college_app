@@ -6,19 +6,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.collage.dao.GradeDao
 import com.example.collage.dao.GroupDao
 import com.example.collage.dao.SubjectDao
 import com.example.collage.dao.SubjectsTimeDao
 import com.example.collage.dao.UserDao
+import com.example.collage.models.Grade
 import com.example.collage.models.Group
 import com.example.collage.models.Subject
 import com.example.collage.models.SubjectTime
 import com.example.collage.models.Role
 import com.example.collage.models.User
-import com.example.collage.services.SubjectWithStudentMark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
 
@@ -28,7 +30,7 @@ import java.time.Month
         Group::class,
         Subject::class,
         SubjectTime::class,
-        SubjectWithStudentMark::class,
+        Grade::class,
                ],
     version = 1
 )
@@ -37,6 +39,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun groupDao(): GroupDao
     abstract fun userDao(): UserDao
     abstract fun subjectDao(): SubjectDao
+    abstract fun gradeDao(): GradeDao
     abstract fun subjectsTimeDao(): SubjectsTimeDao
 
     companion object{
@@ -111,26 +114,6 @@ abstract class AppDatabase : RoomDatabase() {
                 db.subjectDao().insertAll(subjects)
             }
 
-//            if(db.subjectDao().countMarks() == 0){
-//                val example5 = SubjectWithStudentMark(3, 1, listOf(2, 3, 4, 5))
-//                val example6 = SubjectWithStudentMark(3, 3, listOf(4, 4, 4))
-//                val example7 = SubjectWithStudentMark(4, 2, listOf(3, 4, 5, 3))
-//                val example8 = SubjectWithStudentMark(4, 3, listOf(5, 5, 4))
-//                val example9 = SubjectWithStudentMark(5, 1, listOf(4, 3, 2, 5))
-//                val marks = listOf(
-//                    SubjectWithStudentMark(userId = 1, subjectId =  1, marks = listOf(5, 4, 3, 5, 4)),
-//                    SubjectWithStudentMark(5, 2, listOf(5, 5, 5)),
-//                    SubjectWithStudentMark(5, 1, listOf(4, 3, 2, 5)),
-//                    SubjectWithStudentMark(1, 1, listOf(5, 4, 5, 4, 3)),
-//                    SubjectWithStudentMark(2, 1, listOf(3, 4, 3)),
-//                    example5,
-//                    example6,
-//                    example7,
-//                    example8,
-//                    example9
-//                )
-//                db.subjectDao().insertAllWithMarks(marks)
-//            }
 
             if(db.subjectsTimeDao().count() == 0){
                 val monday = listOf(
@@ -139,6 +122,7 @@ abstract class AppDatabase : RoomDatabase() {
                         subjectTimeId = 1,
                         subjectId = 1,
                         teacherId = 8,
+                        groupId = 1,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 23, 9, 0),  // 23 июня (пн)
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 23, 10, 30)
                     ),
@@ -146,6 +130,7 @@ abstract class AppDatabase : RoomDatabase() {
                         subjectTimeId = 2,
                         subjectId = 2,
                         teacherId = 9,
+                        groupId = 1,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 23, 10, 40), // Перемена 10 мин
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 23, 12, 10)
                     ),
@@ -157,6 +142,8 @@ abstract class AppDatabase : RoomDatabase() {
                         subjectTimeId = 3,
                         subjectId = 3,
                         teacherId = 7,
+                        groupId = 2,
+
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 24, 8, 30),  // 24 июня (вт)
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 24, 10, 0)
                     ),
@@ -164,6 +151,7 @@ abstract class AppDatabase : RoomDatabase() {
                         subjectTimeId = 4,
                         subjectId = 4,
                         teacherId = 7,
+                        groupId = 2,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 24, 10, 20), // Перемена 20 мин
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 24, 11, 50)
                     ),
@@ -175,6 +163,7 @@ abstract class AppDatabase : RoomDatabase() {
                         subjectTimeId = 5,
                         subjectId = 5,
                         teacherId = 10,
+                        groupId = 2,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 25, 13, 0),  // 25 июня (ср) - день начинается позже
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 25, 14, 30)
                     ),
@@ -182,6 +171,7 @@ abstract class AppDatabase : RoomDatabase() {
                         subjectTimeId = 6,
                         subjectId = 6,
                         teacherId = 11,
+                        groupId = 3,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 25, 14, 40), // Перемена 10 мин
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 25, 16, 10)
                     ),
@@ -192,6 +182,8 @@ abstract class AppDatabase : RoomDatabase() {
                         subjectTimeId = 7,
                         subjectId = 7,
                         teacherId = 12,
+                        groupId = 3,
+
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 26, 9, 30),  // 26 июня (чт)
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 26, 11, 0)
                     ),
@@ -199,6 +191,7 @@ abstract class AppDatabase : RoomDatabase() {
                         subjectTimeId = 8,
                         subjectId = 8,
                         teacherId = 10,
+                        groupId = 4,
                         lessonStart = LocalDateTime.of(2025, Month.JUNE, 26, 11, 15), // Перемена 15 мин
                         lessonEnd = LocalDateTime.of(2025, Month.JUNE, 26, 12, 45)
                     ),
@@ -208,6 +201,35 @@ abstract class AppDatabase : RoomDatabase() {
                 db.subjectsTimeDao().insertAll(wednesday)
                 db.subjectsTimeDao().insertAll(thursday)
 
+            }
+
+            if(db.gradeDao().count() == 0){
+
+                val marks = listOf(
+                    Grade(
+                        gradeId = 1,
+                        subjectId = 1,
+                        studentId = 2,
+                        value = 5,
+
+                        date = LocalDate.of(2025, Month.JUNE, 23).toString()
+                    ),
+                    Grade(
+                        gradeId = 1,
+                        subjectId = 1,
+                        studentId = 2,
+                        value = 5,
+                        date = LocalDate.of(2025, Month.JUNE, 23).toString()
+                    ),
+                    Grade(
+                        gradeId = 1,
+                        subjectId = 1,
+                        studentId = 2,
+                        value = 5,
+                        date = LocalDate.of(2025, Month.JUNE, 23).toString()
+                    ),
+                )
+                db.gradeDao().insertAll(marks)
             }
         }
 

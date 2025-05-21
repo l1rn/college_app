@@ -13,6 +13,9 @@
         android:theme="@style/Theme.College"
         tools:targetApi="31">
         <activity
+            android:name=".activity.teacher.TeachersScheduleForStudentsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.student.SubjectAboutActivity"
             android:exported="false" />
         <activity

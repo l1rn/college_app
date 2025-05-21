@@ -16,9 +16,9 @@ interface SubjectsTimeDao {
     @Query("SELECT * FROM subjectsTime")
     suspend fun getAllSubjectsTime(): List<SubjectTime>
 
-//    @Query("SELECT teacherId FROM subjectsTime WHERE subjectId = :subjectId")
-//    suspend fun getTeacherIdById(subjectId: Int): Int
-
     @Query("SELECT * FROM subjectsTime WHERE subjectId = :subjectId")
     suspend fun getSubjectById(subjectId: Int): SubjectTime
+
+    @Query("SELECT * FROM subjectsTime WHERE teacherId = :teacherId")
+    suspend fun getAllSubjectsTimeByTeacherId(teacherId: Int?): List<SubjectTime>
 }

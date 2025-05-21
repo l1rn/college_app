@@ -9,6 +9,7 @@ data class SubjectTime(
     @PrimaryKey val subjectTimeId: Int,
     val subjectId: Int,
     val teacherId: Int? = null,
+    val groupId: Int,
     val lessonStart: LocalDateTime,
     val lessonEnd: LocalDateTime
 )

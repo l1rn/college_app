@@ -55,7 +55,7 @@
                         android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Оценки:"
+                        android:text="Оценки:"
                         android:fontFamily="@font/mulish"
                         android:textFontWeight="600"
                         android:textSize="25dp"
@@ -96,7 +96,7 @@
                         android:textColor="#202124"
                         android:textFontWeight="600"
                         android:textSize="25dp"
-                        tools:text="Преподователь:" />
+                        android:text="Преподователь:" />
                     <TextView
                         android:gravity="center"
                         android:id="@+id/tTeacherName"
