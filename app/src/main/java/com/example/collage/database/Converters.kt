@@ -30,4 +30,15 @@ class Converters {
         val type = object : TypeToken<List<SubjectTime>>() {}.type
         return Gson().fromJson(value, type)
     }
+
+    @TypeConverter
+    fun fromListToString(marks: List<Int>): String {
+        return Gson().toJson(marks)
+    }
+
+    @TypeConverter
+    fun fromStringToList(marksString: String): List<Int>{
+        val type = object : TypeToken<List<Int>>() {}.type
+        return Gson().fromJson(marksString, type)
+    }
 }

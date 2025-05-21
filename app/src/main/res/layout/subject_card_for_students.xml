@@ -14,7 +14,9 @@
             android:layout_height="300dp"
             android:orientation="vertical"
             android:background="@drawable/subject_card_wrapper"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginVertical="20dp"
+            android:layout_marginBottom="20dp">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -14,12 +14,11 @@ import com.example.collage.models.Group
 import com.example.collage.models.Subject
 import com.example.collage.models.SubjectTime
 import com.example.collage.models.Role
-import com.example.collage.models.Schedule
 import com.example.collage.models.User
+import com.example.collage.services.SubjectWithStudentMark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
 
@@ -29,6 +28,7 @@ import java.time.Month
         Group::class,
         Subject::class,
         SubjectTime::class,
+        SubjectWithStudentMark::class,
                ],
     version = 1
 )
@@ -110,6 +110,28 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                 db.subjectDao().insertAll(subjects)
             }
+
+//            if(db.subjectDao().countMarks() == 0){
+//                val example5 = SubjectWithStudentMark(3, 1, listOf(2, 3, 4, 5))
+//                val example6 = SubjectWithStudentMark(3, 3, listOf(4, 4, 4))
+//                val example7 = SubjectWithStudentMark(4, 2, listOf(3, 4, 5, 3))
+//                val example8 = SubjectWithStudentMark(4, 3, listOf(5, 5, 4))
+//                val example9 = SubjectWithStudentMark(5, 1, listOf(4, 3, 2, 5))
+//                val marks = listOf(
+//                    SubjectWithStudentMark(userId = 1, subjectId =  1, marks = listOf(5, 4, 3, 5, 4)),
+//                    SubjectWithStudentMark(5, 2, listOf(5, 5, 5)),
+//                    SubjectWithStudentMark(5, 1, listOf(4, 3, 2, 5)),
+//                    SubjectWithStudentMark(1, 1, listOf(5, 4, 5, 4, 3)),
+//                    SubjectWithStudentMark(2, 1, listOf(3, 4, 3)),
+//                    example5,
+//                    example6,
+//                    example7,
+//                    example8,
+//                    example9
+//                )
+//                db.subjectDao().insertAllWithMarks(marks)
+//            }
+
             if(db.subjectsTimeDao().count() == 0){
                 val monday = listOf(
                     // Понедельник

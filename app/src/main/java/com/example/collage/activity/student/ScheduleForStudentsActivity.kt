@@ -1,12 +1,13 @@
 package com.example.collage.activity.student
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -16,8 +17,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.collage.R
 import com.example.collage.SessionManager
+import com.example.collage.activity.student.SubjectAboutActivity
 import com.example.collage.database.AppDatabase
-import com.example.collage.models.Schedule
 import com.example.collage.models.SubjectTime
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
@@ -54,8 +55,9 @@ class ScheduleForStudentsActivity : AppCompatActivity() {
     private fun loadStudentGroup(){
         studentId = SessionManager.getStudentId(this)
         lifecycleScope.launch {
+            val groupId = db.userDao().getUserFromId(studentId).groupId
             findViewById<TextView>(R.id.tStudentGroup).text =
-                db.userDao().getUserFromId(studentId).name
+                db.groupDao().getGroupFromId(groupId).name
         }
     }
 
@@ -79,6 +81,9 @@ class ScheduleForStudentsActivity : AppCompatActivity() {
             val view = convertView ?: inflater.inflate(R.layout.subject_card_for_students, parent, false)
             val item = getItem(position)
 
+            val intent = Intent(applicationContext, SubjectAboutActivity::class.java).apply {
+                putExtra("SUBJECT_ID", item.subjectId)
+            }
 
             lifecycleScope.launch {
                 view.findViewById<TextView>(R.id.tSubjectStudent).text =
@@ -88,6 +93,10 @@ class ScheduleForStudentsActivity : AppCompatActivity() {
                     "Начало: ${item.lessonStart.format(timeFormatter)}"
                 view.findViewById<TextView>(R.id.tLessonEnd).text =
                     "Конец: ${item.lessonEnd.format(timeFormatter)}"
+
+                view.findViewById<Button>(R.id.bAboutSubject).setOnClickListener {
+                    startActivity(intent)
+                }
             }
 
             return view
