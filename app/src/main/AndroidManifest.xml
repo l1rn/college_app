@@ -22,16 +22,7 @@
             android:name=".activity.student.SubjectAboutActivity"
             android:exported="false" />
         <activity
-            android:name=".SubjectDetailsActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.student.ScheduleForStudentsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.teacher.TeacherActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.student.StudentActivity"
             android:exported="false" />
         <activity
             android:name=".activity.LoginActivity"

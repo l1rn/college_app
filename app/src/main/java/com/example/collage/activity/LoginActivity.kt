@@ -14,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.collage.R
 import com.example.collage.SessionManager
 import com.example.collage.activity.student.ScheduleForStudentsActivity
-import com.example.collage.activity.student.StudentActivity
 import com.example.collage.activity.teacher.TeacherActivity
 import com.example.collage.activity.teacher.TeachersScheduleForStudentsActivity
 import com.example.collage.database.AppDatabase

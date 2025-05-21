@@ -23,3 +23,6 @@ and see his/her schedule
 > TODO - make schedule only for groups not for all
 ## 🧑‍🏫 Teacher
 When we enter we can see our schedule. We have cards of Subjects. If we enter in this item we go to some subject and put some grades some students
+
+## Result
+![](documentation/result.gif)

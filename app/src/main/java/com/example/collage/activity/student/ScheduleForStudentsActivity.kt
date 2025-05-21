@@ -44,6 +44,9 @@ class ScheduleForStudentsActivity : AppCompatActivity() {
         lv.adapter = adapter
         loadSchedules()
         loadStudentGroup()
+        findViewById<Button>(R.id.bBackStudentCard).setOnClickListener {
+            finish()
+        }
     }
 
     private fun loadSchedules(){
