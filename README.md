@@ -1,4 +1,4 @@
-# 🏫 Collage app
+# 🏫 College app
 ## 📱 Mobile app on Kotlin
 | 🐨 kotlin |🐘 gradle|☕ java|
 |-----------|---------|--------|
